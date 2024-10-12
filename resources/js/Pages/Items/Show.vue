@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
-
-interface Category {
-    id: number;
-    name: string;
-}
+import { Head, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 interface Item {
     id: number;
@@ -15,14 +11,36 @@ interface Item {
     stock: number;
     online: boolean;
     images_count: number;
-    category: Category;
+    category: {
+        id: number;
+        name: string;
+    };
 }
 
 interface Props {
     item: Item;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+const showDeleteModal = ref(false);
+
+const openDeleteModal = () => {
+    showDeleteModal.value = true;
+};
+
+const closeDeleteModal = () => {
+    showDeleteModal.value = false;
+};
+
+const deleteItem = () => {
+    router.delete(route('items.destroy', props.item.id), {
+        preserveState: false,
+        preserveScroll: false,
+        onSuccess: () => {
+            router.visit(route('items.index'));
+        },
+    });
+};
 </script>
 
 <template>
@@ -34,12 +52,9 @@ defineProps<Props>();
                 <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
                     {{ item.name }}
                 </h2>
-                <Link
-                    :href="route('items.index')"
-                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                >
-                    Back to List
-                </Link>
+                <button @click="openDeleteModal" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Delete
+                </button>
             </div>
         </template>
 
@@ -48,20 +63,47 @@ defineProps<Props>();
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <h3 class="text-lg font-semibold mb-2">Details</h3>
-                                <p><strong>Name:</strong> {{ item.name }}</p>
-                                <p><strong>Description:</strong> {{ item.description }}</p>
-                                <p><strong>Price:</strong> €{{ item.price.toFixed(2) }}</p>
-                                <p><strong>Stock:</strong> {{ item.stock }}</p>
-                                <p><strong>Status:</strong> {{ item.online ? 'Online' : 'Offline' }}</p>
-                                <p><strong>Category:</strong> {{ item.category?.name || 'No Category' }}</p>
-                                <p><strong>Images:</strong> {{ item.images_count }}</p>
-                            </div>
-                            <div>
-                                <!-- You can add more sections here, like images or related items -->
-                            </div>
+                            <div class="font-bold">ID:</div>
+                            <div>{{ item.id }}</div>
+
+                            <div class="font-bold">Name:</div>
+                            <div>{{ item.name }}</div>
+
+                            <div class="font-bold">Description:</div>
+                            <div>{{ item.description }}</div>
+
+                            <div class="font-bold">Price:</div>
+                            <div>€{{ item.price.toFixed(2) }}</div>
+
+                            <div class="font-bold">Stock:</div>
+                            <div>{{ item.stock }}</div>
+
+                            <div class="font-bold">Status:</div>
+                            <div>{{ item.online ? 'Online' : 'Offline' }}</div>
+
+                            <div class="font-bold">Images:</div>
+                            <div>{{ item.images_count }}</div>
+
+                            <div class="font-bold">Category:</div>
+                            <div>{{ item.category.name }}</div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Modal -->
+        <div v-if="showDeleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" @click="closeDeleteModal">
+            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800" @click.stop>
+                <div class="mt-3 text-center">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100">Are you sure you want to delete this item?</h3>
+                    <div class="flex items-center justify-end mt-4">
+                        <button @click="closeDeleteModal" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2">
+                            Cancel
+                        </button>
+                        <button @click="deleteItem" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            Confirm
+                        </button>
                     </div>
                 </div>
             </div>

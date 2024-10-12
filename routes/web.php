@@ -3,7 +3,6 @@
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -26,6 +25,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/items', [ItemController::class, 'index'])->name('items.index');
+Route::post('/items', [ItemController::class, 'store'])->name('items.store');
+Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
+
 
 Route::post('/items/{item}/images', [ImageController::class, 'store'])->name('item.images.store');
 Route::delete('/items/{item}/images/{image}', [ImageController::class, 'destroy'])->name('item.images.destroy');

@@ -22,8 +22,11 @@ class ItemController extends Controller
             ->orderBy('id')
             ->paginate(12);
 
+        $categories = Category::all();
+
         return Inertia::render('Items/Index', [
-            'items' => $items
+            'items' => $items,
+            'categories' => $categories
         ]);
     }
 
@@ -40,7 +43,14 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+
+        // Set default values
+        $validatedData['online'] = false;
+
+        $item = Item::create($validatedData);
+
+        return redirect()->route('items.index')->with('success', 'Item created successfully.');
     }
 
     /**
@@ -77,6 +87,8 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        $item->delete();
+        return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
     }
+
 }

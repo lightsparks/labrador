@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
             'email' => 'devnirux@gmail.com',
             'username' => 'devnirux',
             'password' => Hash::make(env("APP_USER_PASSWORD_SEEDED")),
-            'is_admin' => 'true',
+            'is_admin' => true,
         ]);
 
         User::create([
