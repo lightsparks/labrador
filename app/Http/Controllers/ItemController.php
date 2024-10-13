@@ -6,6 +6,7 @@ use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Models\Item;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -56,13 +57,18 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Item $item): Response
+    public function show($id): \Inertia\Response
     {
-        $item->load('category');
-        $item->loadCount('images');
+        $item = Item::with('category')->withCount('images')->find($id);
+
+        if (!$item) {
+            return Inertia::render('Items/ItemNotFound', [
+                'message' => 'The item you are looking for could not be found.',
+            ]);
+        }
 
         return Inertia::render('Items/Show', [
-            'item' => $item
+            'item' => $item,
         ]);
     }
 
