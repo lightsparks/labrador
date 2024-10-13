@@ -68,7 +68,7 @@ const submitForm = () => {
                 <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
                     Items
                 </h2>
-                <button @click="openModal" class="bg-indigo-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button @click="openModal" class="bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                     + Add new Item
                 </button>
             </div>

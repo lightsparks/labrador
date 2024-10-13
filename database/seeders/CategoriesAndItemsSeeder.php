@@ -14,9 +14,9 @@ class CategoriesAndItemsSeeder extends Seeder
         $faker = Faker::create();
 
         // Create Categories
-        $braceletCategory = Category::create(['name' => 'Bracelet', 'description' => 'Beautiful bracelets made from various minerals']);
-        $necklaceCategory = Category::create(['name' => 'Necklace', 'description' => 'Elegant necklaces inspired by tropical flowers']);
-        $earringsCategory = Category::create(['name' => 'Earrings', 'description' => 'Exotic earrings inspired by tropical animals']);
+        $braceletCategory = Category::create(['name' => 'Bracelet', 'description' => 'Beautiful bracelets made from various minerals', 'online' => true]);
+        $necklaceCategory = Category::create(['name' => 'Necklace', 'description' => 'Elegant necklaces inspired by tropical flowers', 'online' => true]);
+        $earringsCategory = Category::create(['name' => 'Earrings', 'description' => 'Exotic earrings inspired by tropical animals', 'online' => true]);
 
         // Minerals for bracelets
         $minerals = [

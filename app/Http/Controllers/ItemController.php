@@ -67,6 +67,8 @@ class ItemController extends Controller
             ]);
         }
 
+        $item->category = $item->category ?? (object)['name' => 'No Category'];
+
         return Inertia::render('Items/Show', [
             'item' => $item,
         ]);
