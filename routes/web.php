@@ -16,7 +16,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('items', ItemController::class);
-    Route::resource('categories', CategoryController::class);
+
+    // Categories routes
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
+    // Add other category routes as needed (create, store, edit, update, destroy)
+
     Route::resource('clients', ClientController::class);
     Route::resource('orders', OrderController::class);
 
