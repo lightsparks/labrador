@@ -10,10 +10,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
@@ -24,23 +20,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('clients', ClientController::class);
     Route::resource('orders', OrderController::class);
 
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post('/items/{item}/images', [ImageController::class, 'store'])->name('item.images.store');
+    Route::delete('/items/{item}/images/{image}', [ImageController::class, 'destroy'])->name('item.images.destroy');
+
     Route::middleware('admin')->group(function () {
         Route::resource('admin', AdminController::class);
     });
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// Redirect root to login
+Route::get('/', function () {
+    return redirect()->route('login');
 });
 
-Route::get('/items', [ItemController::class, 'index'])->name('items.index');
-Route::post('/items', [ItemController::class, 'store'])->name('items.store');
-Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
-
-
-Route::post('/items/{item}/images', [ImageController::class, 'store'])->name('item.images.store');
-Route::delete('/items/{item}/images/{image}', [ImageController::class, 'destroy'])->name('item.images.destroy');
-
+// Include authentication routes
 require __DIR__.'/auth.php';
+
+// Catch-all route to redirect to login
+Route::any('{any}', function () {
+    return redirect()->route('login');
+})->where('any', '.*');

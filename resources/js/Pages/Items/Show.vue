@@ -2,8 +2,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { mdiDelete } from '@mdi/js'
-
+import BackButton from "@/Components/Items/BackButton.vue";
+import DeleteButton from "@/Components/Items/DeleteButton.vue";
 
 interface Item {
     id: number;
@@ -50,58 +50,59 @@ const deleteItem = () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex justify-between items-center">
-                <Link
-                    :href="route('items.index')"
-                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                >
-                    < Back to List
-                </Link>
-                <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    {{ item.name }}
-                </h2>
-                <button
-                    @click="openDeleteModal"
-                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center"
-                >
-                    <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                        <path :d="mdiDelete" fill="currentColor" />
-                    </svg>
-                    Delete
-                </button>
+            <div class="flex items-center justify-start">
+                <BackButton :href="route('items.index')" text="Back to Items List"/>
             </div>
         </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="font-bold">ID:</div>
-                            <div>{{ item.id }}</div>
-
-                            <div class="font-bold">Name:</div>
-                            <div>{{ item.name }}</div>
-
-                            <div class="font-bold">Description:</div>
-                            <div>{{ item.description }}</div>
-
-                            <div class="font-bold">Price:</div>
-                            <div>€{{ item.price.toFixed(2) }}</div>
-
-                            <div class="font-bold">Stock:</div>
-                            <div>{{ item.stock }}</div>
-
-                            <div class="font-bold">Status:</div>
-                            <div>{{ item.online ? 'Online' : 'Offline' }}</div>
-
-                            <div class="font-bold">Images:</div>
-                            <div>{{ item.images_count }}</div>
-
-                            <div class="font-bold">Category:</div>
-                            <div>{{ item.category.name }}</div>
+                <div class="p-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <div class="px-4 pb-5 sm:px-6">
+                            <h3 class="pb-3 text-2xl font-medium leading-6 text-gray-900 dark:text-gray-100">{{ item.name }}</h3>
+                            <p class="mt-1 max-w-2xl text-m text-gray-500 dark:text-gray-400">Details and information about {{ item.name }}.</p>
                         </div>
                     </div>
+                    <div class="border-t border-gray-200 dark:border-gray-700">
+                        <dl class="my-6">
+                            <div class="bg-gray-50 dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-m font-medium text-gray-500 dark:text-gray-300">ID</dt>
+                                <dd class="mt-1 text-m text-gray-900 dark:text-gray-100 sm:col-span-2 sm:mt-0">{{ item.id }}</dd>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-m font-medium text-gray-500 dark:text-gray-300">Name</dt>
+                                <dd class="mt-1 text-m text-gray-900 dark:text-gray-100 sm:col-span-2 sm:mt-0">{{ item.name }}</dd>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-m font-medium text-gray-500 dark:text-gray-300">Description</dt>
+                                <dd class="mt-1 text-m text-gray-900 dark:text-gray-100 sm:col-span-2 sm:mt-0">{{ item.description }}</dd>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-m font-medium text-gray-500 dark:text-gray-300">Price</dt>
+                                <dd class="mt-1 text-m text-gray-900 dark:text-gray-100 sm:col-span-2 sm:mt-0">€{{ item.price.toFixed(2) }}</dd>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-m font-medium text-gray-500 dark:text-gray-300">Stock</dt>
+                                <dd class="mt-1 text-m text-gray-900 dark:text-gray-100 sm:col-span-2 sm:mt-0">{{ item.stock }}</dd>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-m font-medium text-gray-500 dark:text-gray-300">Status</dt>
+                                <dd class="mt-1 text-m text-gray-900 dark:text-gray-100 sm:col-span-2 sm:mt-0">{{ item.online ? 'Online' : 'Offline' }}</dd>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-m font-medium text-gray-500 dark:text-gray-300">Images</dt>
+                                <dd class="mt-1 text-m text-gray-900 dark:text-gray-100 sm:col-span-2 sm:mt-0">{{ item.images_count }}</dd>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-m font-medium text-gray-500 dark:text-gray-300">Category</dt>
+                                <dd class="mt-1 text-m text-gray-900 dark:text-gray-100 sm:col-span-2 sm:mt-0">{{ item.category.name }}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <DeleteButton :onClick="openDeleteModal" />
                 </div>
             </div>
         </div>
