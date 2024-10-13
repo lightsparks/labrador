@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { mdiDelete } from '@mdi/js'
+
 
 interface Item {
     id: number;
@@ -49,10 +51,22 @@ const deleteItem = () => {
     <AuthenticatedLayout>
         <template #header>
             <div class="flex justify-between items-center">
+                <Link
+                    :href="route('items.index')"
+                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                >
+                    < Back to List
+                </Link>
                 <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
                     {{ item.name }}
                 </h2>
-                <button @click="openDeleteModal" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                <button
+                    @click="openDeleteModal"
+                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center"
+                >
+                    <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                        <path :d="mdiDelete" fill="currentColor" />
+                    </svg>
                     Delete
                 </button>
             </div>

@@ -23,10 +23,11 @@ class StoreItemRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'category_id' => 'nullable|exists:categories,id',
             'description' => 'nullable|string',
             'price' => 'nullable|numeric|min:0',
             'stock' => 'nullable|integer|min:0',
-            'category_id' => 'nullable|exists:categories,id',
+            'online' => 'boolean',
         ];
     }
 }

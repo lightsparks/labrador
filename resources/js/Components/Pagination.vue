@@ -28,8 +28,8 @@ const decodeHtml = (html: string) => {
                 />
                 <Link
                     v-else
-                    class="mb-1 mr-1 rounded border px-4 py-3 text-sm leading-4 hover:bg-gray-700 focus:border-indigo-500 focus:text-indigo-950"
-                    :class="{ 'bg-white text-gray-600 font-bold': link.active, 'text-gray-600': !link.active }"
+                    class="mb-1 mr-1 rounded border px-4 py-3 text-sm leading-4 hover:bg-gray-400 focus:border-gray-500 focus:bg-gray-400 focus:text-indigo-950 dark:text-gray-400"
+                    :class="{ 'bg-white text-gray-600 font-bold border-gray-400': link.active, 'text-gray-600': !link.active }"
                     :href="link.url"
                 >
                     {{ decodeHtml(link.label) }}
