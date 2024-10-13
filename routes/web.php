@@ -1,7 +1,11 @@
 <?php
 
-use App\Http\Controllers\ItemController;
+use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,6 +20,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('items', ItemController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('clients', ClientController::class);
+    Route::resource('orders', OrderController::class);
+
+    Route::middleware('admin')->group(function () {
+        Route::resource('admin', AdminController::class);
+    });
 });
 
 Route::middleware('auth')->group(function () {
