@@ -4,6 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
+import OnlineStatusIndicator from "@/Components/OnlineStatusIndicator.vue";
 
 interface Category {
     id: number;
@@ -161,27 +162,8 @@ const submitForm = () => {
                                         >
                                             {{ item.images_count }}
                                         </td>
-                                        <td
-                                            class="whitespace-nowrap px-6 py-4 text-center"
-                                        >
-                                            <span
-                                                :class="[
-                                                    'inline-block h-3 w-3 rounded-full',
-                                                    item.online
-                                                        ? 'bg-green-500 dark:bg-green-400'
-                                                        : 'bg-red-500 dark:bg-red-400',
-                                                ]"
-                                                :title="
-                                                    item.online
-                                                        ? 'Online'
-                                                        : 'Offline'
-                                                "
-                                                :aria-label="
-                                                    item.online
-                                                        ? 'Online'
-                                                        : 'Offline'
-                                                "
-                                            ></span>
+                                        <td class="whitespace-nowrap px-6 py-4 text-center">
+                                            <OnlineStatusIndicator :isOnline="item.online" />
                                         </td>
                                     </Link>
                                 </tr>
