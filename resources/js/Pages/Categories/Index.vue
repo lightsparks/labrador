@@ -4,6 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
+import AddNewButton from "@/Components/AddNewButton.vue";
 
 interface Category {
     id: number;
@@ -26,7 +27,7 @@ const showModal = ref(false);
 const form = useForm({
     name: '',
     description: '',
-    online: true
+    online: false,
 });
 
 const openModal = () => {
@@ -57,9 +58,7 @@ const submitForm = () => {
                 <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
                     Categories
                 </h2>
-                <button @click="openModal" class="bg-indigo-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    + Add new Category
-                </button>
+                <AddNewButton text="Add new Category" :onClick="openModal" />
             </div>
         </template>
 

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreItemRequest;
-use App\Http\Requests\UpdateItemRequest;
-use App\Models\Item;
+use App\Http\Requests\Item\StoreItemRequest;
+use App\Http\Requests\Item\UpdateItemRequest;
 use App\Models\Category;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Item;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -62,7 +61,7 @@ class ItemController extends Controller
         $item = Item::with('category')->withCount('images')->find($id);
 
         if (!$item) {
-            return Inertia::render('Items/ItemNotFound', [
+            return Inertia::render('Item/ItemNotFound', [
                 'message' => 'The item you are looking for could not be found.',
             ]);
         }
