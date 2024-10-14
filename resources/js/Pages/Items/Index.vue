@@ -5,6 +5,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import OnlineStatusIndicator from "@/Components/OnlineStatusIndicator.vue";
+import AddNewButton from "@/Components/AddNewButton.vue";
 
 interface Category {
     id: number;
@@ -68,9 +69,7 @@ const submitForm = () => {
                 <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
                     Items
                 </h2>
-                <button @click="openModal" class="bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                    + Add new Item
-                </button>
+                <AddNewButton text="Add new Item" :onClick="openModal" />
             </div>
         </template>
 
@@ -215,6 +214,12 @@ const submitForm = () => {
                                 Stock
                             </label>
                             <input v-model="form.stock" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-300" id="stock" type="number">
+                        </div>
+                        <div class="mb-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" v-model="form.online" class="form-checkbox">
+                                <span class="ml-2 text-gray-700 dark:text-gray-300">Online</span>
+                            </label>
                         </div>
                         <div class="flex items-center justify-between mt-4">
                             <button type="button" @click="closeModal" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
