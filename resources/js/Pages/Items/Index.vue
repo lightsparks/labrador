@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import Pagination from '@/Components/Pagination.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
 import OnlineStatusIndicator from "@/Components/OnlineStatusIndicator.vue";
 import AddNewButton from "@/Components/AddNewButton.vue";
 
@@ -197,7 +196,7 @@ const submitForm = () => {
                                 Category
                             </label>
                             <select v-model="form.category_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-300" id="category">
-                                <option :value="null">No category selected</option>
+                                <option :value="null">---- ----</option>
                                 <option v-for="category in categories" :key="category.id" :value="category.id">
                                     {{ category.name }}
                                 </option>
