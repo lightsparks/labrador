@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Category;
 use App\Models\Item;
+use App\Models\Inventory;
 use Faker\Factory as Faker;
 
 class CategoriesAndItemsSeeder extends Seeder
@@ -37,37 +38,49 @@ class CategoriesAndItemsSeeder extends Seeder
 
         // Create Items for Bracelets
         foreach ($minerals as $mineral) {
-            Item::create([
+            $item = Item::create([
                 'name' => $mineral,
                 'description' => $faker->paragraph,
                 'price' => $faker->randomFloat(2, 15, 60),
-                'stock' => $faker->numberBetween(1, 10),
                 'online' => $faker->boolean(80),
                 'category_id' => $braceletCategory->id,
+            ]);
+
+            Inventory::create([
+                'item_id' => $item->id,
+                'quantity' => $faker->numberBetween(1, 10),
             ]);
         }
 
         // Create Items for Necklaces
         foreach ($flowers as $flower) {
-            Item::create([
+            $item = Item::create([
                 'name' => $flower,
                 'description' => $faker->paragraph,
                 'price' => $faker->randomFloat(2, 20, 70),
-                'stock' => $faker->numberBetween(1, 5),
                 'online' => $faker->boolean(80),
                 'category_id' => $necklaceCategory->id,
+            ]);
+
+            Inventory::create([
+                'item_id' => $item->id,
+                'quantity' => $faker->numberBetween(1, 5),
             ]);
         }
 
         // Create Items for Earrings
         foreach ($animals as $animal) {
-            Item::create([
+            $item = Item::create([
                 'name' => $animal,
                 'description' => $faker->paragraph,
                 'price' => $faker->randomFloat(2, 10, 60),
-                'stock' => $faker->numberBetween(1, 3),
                 'online' => $faker->boolean(80),
                 'category_id' => $earringsCategory->id,
+            ]);
+
+            Inventory::create([
+                'item_id' => $item->id,
+                'quantity' => $faker->numberBetween(1, 3),
             ]);
         }
     }

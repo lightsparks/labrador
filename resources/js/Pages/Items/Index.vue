@@ -15,10 +15,12 @@ interface Item {
     id: number;
     name: string;
     price: number | null;
-    stock: number | null;
     online: boolean;
     images_count: number;
     category: Category | null;
+    inventory: {
+        quantity: number;
+    } | null;
 }
 
 interface Props {
@@ -32,12 +34,13 @@ interface Props {
 const props = defineProps<Props>();
 
 const showModal = ref(false);
+
 const form = useForm({
     name: '',
     description: '',
     price: null as number | null,
-    stock: null as number | null,
-    category_id: null as number | null
+    category_id: null as number | null,
+    quantity: null as number | null
 });
 
 const openModal = () => {
@@ -106,7 +109,7 @@ const submitForm = () => {
                                     <th
                                         class="w-1/12 px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300"
                                     >
-                                        Stock
+                                        Quantity
                                     </th>
                                     <th
                                         class="w-1/12 px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-300"
@@ -139,25 +142,15 @@ const submitForm = () => {
                                             {{ item.name }}
                                         </td>
                                         <td class="whitespace-nowrap px-6 py-4">
-                                            {{
-                                                item.category?.name ||
-                                                'No Category'
-                                            }}
+                                            {{ item.category?.name || 'No Category' }}
                                         </td>
-
-                                        <td
-                                            class="whitespace-nowrap px-6 py-4 text-right"
-                                        >
+                                        <td class="whitespace-nowrap px-6 py-4 text-right">
                                             {{ item.price }}
                                         </td>
-                                        <td
-                                            class="whitespace-nowrap px-6 py-4 text-center"
-                                        >
-                                            {{ item.stock }}
+                                        <td class="whitespace-nowrap px-6 py-4 text-center">
+                                            {{ item.inventory.quantity ? item.inventory.quantity : 'N/A' }}
                                         </td>
-                                        <td
-                                            class="whitespace-nowrap px-6 py-4 text-center"
-                                        >
+                                        <td class="whitespace-nowrap px-6 py-4 text-center">
                                             {{ item.images_count }}
                                         </td>
                                         <td class="whitespace-nowrap px-6 py-4 text-center">
@@ -209,11 +202,12 @@ const submitForm = () => {
                             <input v-model="form.price" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-300" id="price" type="number" step="0.01">
                         </div>
                         <div class="mb-4">
-                            <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2" for="stock">
-                                Stock
+                            <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2" for="quantity">
+                                Quantity
                             </label>
-                            <input v-model="form.stock" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-300" id="stock" type="number">
+                            <input v-model="form.quantity" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:text-gray-300" id="quantity" type="number">
                         </div>
+
                         <div class="mb-4">
                             <label class="flex items-center">
                                 <input type="checkbox" v-model="form.online" class="form-checkbox">

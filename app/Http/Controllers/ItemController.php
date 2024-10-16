@@ -16,17 +16,16 @@ class ItemController extends Controller
      */
     public function index(): Response
     {
-        $items = Item::with('category')
-            ->select('id', 'name', 'price', 'stock', 'online', 'category_id')
+        $items = Item::with(['category', 'inventory'])
             ->withCount('images')
-            ->orderBy('id')
-            ->paginate(12);
+            ->orderBy('id', 'asc')
+            ->paginate(10);
 
         $categories = Category::all();
 
         return Inertia::render('Items/Index', [
             'items' => $items,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
@@ -44,11 +43,12 @@ class ItemController extends Controller
     public function store(StoreItemRequest $request)
     {
         $validatedData = $request->validated();
-
-        // Set default values
         $validatedData['online'] = false;
 
         $item = Item::create($validatedData);
+
+        // Create inventory record
+        $item->inventory()->create(['quantity' => $request->input('stock', 0)]);
 
         return redirect()->route('items.index')->with('success', 'Item created successfully.');
     }
@@ -56,9 +56,9 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id): \Inertia\Response
+    public function show($id): Response
     {
-        $item = Item::with('category')->withCount('images')->find($id);
+        $item = Item::with(['category', 'inventory'])->withCount('images')->find($id);
 
         if (!$item) {
             return Inertia::render('Item/ItemNotFound', [
@@ -67,9 +67,13 @@ class ItemController extends Controller
         }
 
         $item->category = $item->category ?? (object)['name' => 'No Category'];
+        $item->stock = $item->inventory ? $item->inventory->quantity : 0;
+
+        $categories = Category::all(); // Add this line
 
         return Inertia::render('Items/Show', [
             'item' => $item,
+            'categories' => $categories, // Add this line
         ]);
     }
 
@@ -86,8 +90,24 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        //
+        $validatedData = $request->validated();
+
+        $item->update($validatedData);
+
+        // Update inventory
+        $item->inventory()->updateOrCreate(
+            ['item_id' => $item->id],
+            ['quantity' => $request->input('quantity', 0)]
+        );
+
+        // Load the updated item with its relationships
+        $item->load(['category', 'inventory']);
+        $item->loadCount('images');
+
+        return back()->with('success', 'Item updated successfully.');
     }
+
+
 
     /**
      * Remove the specified resource from storage.
