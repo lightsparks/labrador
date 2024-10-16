@@ -26,7 +26,7 @@ class UpdateItemRequest extends FormRequest
             'category_id' => 'nullable|exists:categories,id',
             'description' => 'nullable|string',
             'price' => 'nullable|numeric|min:0',
-            'stock' => 'nullable|integer|min:0',
+            'quantity' => 'nullable|integer|min:0',
             'online' => 'boolean',
         ];
     }

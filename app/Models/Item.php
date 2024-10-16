@@ -16,20 +16,23 @@ class Item extends Model
         'name',
         'description',
         'price',
-        'stock',
         'online',
         'category_id',
     ];
 
     protected $casts = [
         'price' => 'float',
-        'stock' => 'integer',
         'online' => 'boolean',
     ];
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function inventory()
+    {
+        return $this->hasOne(Inventory::class);
     }
 
     public function images(): MorphMany

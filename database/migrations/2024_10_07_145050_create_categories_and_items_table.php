@@ -25,9 +25,16 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2)->nullable();
-            $table->integer('stock')->nullable();
             $table->boolean('online')->default(false);
             $table->timestamps();
+        });
+
+        Schema::create('inventories', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
+            $table->integer('quantity')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
         });
 
     }
@@ -37,6 +44,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('inventories');
         Schema::dropIfExists('items');
         Schema::dropIfExists('categories');
     }
