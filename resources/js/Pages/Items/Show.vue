@@ -99,13 +99,22 @@ const deleteItem = () => {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="p-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
-                    <div class="flex items-center">
+                    <div class="flex justify-between">
                         <div class="px-4 pb-5 sm:px-6">
-                            <div class="flex justify-between">
-                                <h3 class="pb-3 text-2xl font-medium leading-6 text-gray-900 dark:text-gray-100">{{ item.name }}</h3>
-                                <EditButton class="fixed-top" :onClick="openEditModal"/>
-                            </div>
-                            <p class="mt-1 max-w-2xl text-m text-gray-500 dark:text-gray-400">Details and information about {{ item.name }}.</p>
+                            <h3 class="pb-3 text-2xl font-medium leading-6 text-gray-900 dark:text-gray-100">{{ item.name }}</h3>
+                            <p class="mt-1 max-w-2xl text-m text-gray-500 dark:text-gray-400">Details and information about {{ item.name}}.</p>
+                        </div>
+                        <div class="online-status fixed-top">
+                            <EditButton class="flex pb-3 justify-end" :onClick="openEditModal"/>
+                            <span class="mt-1 pr-3 text-m text-gray-900 dark:text-gray-100 sm:col-span-2 sm:mt-0">{{ item.online ? 'Online' : 'Offline' }}</span>
+                            <span
+                                :class="[
+                                    'inline-block h-3 w-3 rounded-full',
+                                    item.online ? 'bg-green-500 dark:bg-green-400' : 'bg-red-500 dark:bg-red-400'
+                                ]"
+                                :title="item.online ? 'Online' : 'Offline'"
+                                :aria-label="item.online ? 'Online' : 'Offline'"
+                            ></span>
                         </div>
                     </div>
                     <div class="border-t border-gray-200 dark:border-gray-700">
@@ -133,10 +142,6 @@ const deleteItem = () => {
                             <div class="bg-gray-50 dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt class="text-m font-medium text-gray-500 dark:text-gray-300">Quantity</dt>
                                 <dd class="mt-1 text-m text-gray-900 dark:text-gray-100 sm:col-span-2 sm:mt-0">{{ item.inventory ? item.inventory.quantity : 0  }}</dd>
-                            </div>
-                            <div class="bg-white dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt class="text-m font-medium text-gray-500 dark:text-gray-300">Status</dt>
-                                <dd class="mt-1 text-m text-gray-900 dark:text-gray-100 sm:col-span-2 sm:mt-0">{{ item.online ? 'Online' : 'Offline' }}</dd>
                             </div>
                             <div class="bg-gray-50 dark:bg-gray-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt class="text-m font-medium text-gray-500 dark:text-gray-300">Images</dt>
