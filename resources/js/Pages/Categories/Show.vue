@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, router, useForm} from '@inertiajs/vue3';
-import { ref } from 'vue';
+import {nextTick, ref} from 'vue';
 import BackButton from "@/Components/Items/BackButton.vue";
 import DeleteButton from "@/Components/Items/DeleteButton.vue";
 import EditButton from "@/Components/EditButton.vue";
@@ -21,8 +21,9 @@ const props = defineProps<Props>();
 
 const componentKey = ref(0);
 
-const refreshComponent = () => {
+const refreshComponent = async () => {
     componentKey.value++;
+    await nextTick();
 };
 
 const showDeleteModal = ref(false);
@@ -48,9 +49,9 @@ const submitEditForm = () => {
     form.put(route('categories.update', props.category.id), {
         preserveState: true,
         preserveScroll: true,
-        onSuccess: () => {
+        onSuccess: async () => {
             closeEditModal();
-            refreshComponent();
+            await refreshComponent();
         },
     });
 };
@@ -77,7 +78,7 @@ const deleteCategory = () => {
 <template>
     <Head :title="category.name" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout  :key="componentKey">
         <template #header>
             <div class="flex items-center justify-start">
                 <BackButton :href="route('categories.index')" text="Back to Categories List"/>

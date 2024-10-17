@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import {nextTick, ref} from 'vue';
 import BackButton from "@/Components/Items/BackButton.vue";
 import EditButton from "@/Components/EditButton.vue";
 import DeleteButton from "@/Components/Items/DeleteButton.vue";
@@ -23,15 +23,15 @@ interface Item {
 interface Props {
     item: Item;
     categories: Category[];
-    key?: number;
 }
 
 const props = defineProps<Props>();
 
-const key = ref(0);
+const componentKey = ref(0);
 
-const refreshComponent = () => {
-    key.value++;
+const refreshComponent = async () => {
+    componentKey.value++;
+    await nextTick();
 };
 
 const showDeleteModal = ref(false);
@@ -60,9 +60,9 @@ const submitEditForm = () => {
     form.put(route('items.update', props.item.id), {
         preserveState: true,
         preserveScroll: true,
-        onSuccess: () => {
+        onSuccess: async () => {
             closeEditModal();
-            refreshComponent();
+            await refreshComponent();
         },
     });
 };
@@ -89,7 +89,7 @@ const deleteItem = () => {
 <template>
     <Head :title="item.name" />
 
-    <AuthenticatedLayout :key="key">
+    <AuthenticatedLayout :key="componentKey">
         <template #header>
             <div class="flex items-center justify-start">
                 <BackButton :href="route('items.index')" text="Back to Items List"/>
